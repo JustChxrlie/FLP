@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frozen Legacy — Hockey Career Simulator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+  <div id="app-root">
+
+    <!-- ===== SCREEN: Main menu ===== -->
+    <section class="menu-screen" data-screen="main-menu" hidden>
+      <div class="menu-hero">
+        <div class="faceoff-ring" aria-hidden="true"></div>
+        <div class="faceoff-dot" aria-hidden="true"></div>
+
+        <div class="menu-hero__content">
+          <span class="eyebrow">Live The Life Like A Pro</span>
+          <h1>Frozen<br /><span>Legacy</span></h1>
+          <p class="menu-hero__tagline">
+            From the local rink to the pros. Thousands of
+            decisions. One career to write your name on the ice.
+          </p>
+        </div>
+
+        <div class="menu-hero__footer">
+          <button id="btn-about" type="button">About</button>
+          <span>v<span id="version-label"></span></span>
+        </div>
+      </div>
+
+      <div class="menu-slots">
+        <div>
+          <h2>Your Careers</h2>
+          <p class="menu-slots__subtitle">Continue a saved career or start a new one.</p>
+        </div>
+        <div id="save-slot-list"></div>
+        <button id="btn-settings" class="btn btn--ghost" type="button" style="align-self: flex-start;">
+          ⚙ Settings
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN: Player creation (Phase 3) ===== -->
+    <section class="creation-screen" data-screen="player-creation" hidden>
+      <div class="creation-screen__inner">
+        <header class="creation-header">
+          <span class="eyebrow">New Career</span>
+          <h2>Create Your Player</h2>
+          <p>Every choice here sets the starting point for a different story.</p>
+        </header>
+
+        <div class="creation-grid">
+          <!-- Personal info -->
+          <section class="creation-card">
+            <h3 class="creation-card__title">1. Personal Info</h3>
+            <div class="field-row">
+              <label class="field">
+                <span>First Name</span>
+                <input id="pc-first-name" type="text" placeholder="e.g. Connor" autocomplete="off" />
+              </label>
+              <label class="field">
+                <span>Last Name</span>
+                <input id="pc-last-name" type="text" placeholder="e.g. Whitfield" autocomplete="off" />
+              </label>
+            </div>
+            <button id="pc-random-name" type="button" class="btn btn--ghost btn--small">🎲 Random Name</button>
+
+            <div class="field-row field-row--spaced">
+              <label class="field">
+                <span>Country</span>
+                <select id="pc-country"></select>
+              </label>
+              <label class="field" id="pc-state-field" hidden>
+                <span>State/Province/Region </span>
+                <select id="pc-state"></select>
+              </label>
+              <div class="field">
+                <span>Dominant Hand</span>
+                <div id="pc-hand-segmented" class="segmented">
+                  <button type="button" class="segmented__option" data-hand="L">Left</button>
+                  <button type="button" class="segmented__option segmented__option--active" data-hand="R">Right</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Position -->
+          <section class="creation-card">
+            <h3 class="creation-card__title">2. Position</h3>
+            <div id="pc-position-grid" class="position-grid"></div>
+          </section>
+
+          <!-- Archetype -->
+          <section class="creation-card">
+            <h3 class="creation-card__title">3. Playstyle</h3>
+            <div id="pc-archetype-grid" class="archetype-grid"></div>
+          </section>
+
+          <!-- Potential -->
+          <section class="creation-card">
+            <h3 class="creation-card__title">4. Ambition</h3>
+            <div id="pc-potential-grid" class="archetype-grid"></div>
+            <p class="settings-note">The exact ceiling within your pick stays a little uncertain — scouts still only estimate it.</p>
+          </section>
+
+          <!-- Attributes -->
+          <section class="creation-card creation-card--wide" id="pc-attributes-panel" hidden>
+            <div class="creation-card__header">
+              <h3 class="creation-card__title">5. Starting Attributes</h3>
+              <button id="pc-reroll" type="button" class="btn btn--ghost btn--small">🔄 Reroll</button>
+            </div>
+            <p id="pc-archetype-label" class="pc-archetype"></p>
+            <div id="pc-attributes-grid" class="attr-grid"></div>
+            <p id="pc-scout-badge" class="scout-badge"></p>
+            <p class="settings-note">
+              Your player's true potential is a secret: scouts can only estimate it.
+            </p>
+          </section>
+        </div>
+
+        <footer class="creation-footer">
+          <span id="pc-error" class="creation-footer__error"></span>
+          <div class="creation-footer__actions">
+            <button id="pc-cancel" type="button" class="btn btn--ghost">← Cancel</button>
+            <button id="pc-confirm" type="button" class="btn btn--primary" disabled>Start Career</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN: Career hub (Phase 5) ===== -->
+    <section class="hub-screen" data-screen="career-hub" hidden>
+      <div class="hub-screen__inner">
+        <header class="hub-header">
+          <span id="hub-badge" class="stub-screen__badge">Career hub · Train · Shop · World · Awards</span>
+          <div class="hub-player-block">
+            <div class="hub-summary-card__avatar" aria-hidden="true">🏒</div>
+            <div>
+              <h2 id="hub-player-name"></h2>
+              <p id="hub-player-meta" class="hub-summary-card__meta"></p>
+              <p id="hub-player-archetype" class="hub-summary-card__archetype"></p>
+              <p id="hub-player-scouting" class="hub-summary-card__scouting"></p>
+            </div>
+          </div>
+        </header>
+
+        <div class="hub-grid">
+          <section class="creation-card">
+            <h3 class="creation-card__title">Team</h3>
+            <p id="hub-team-name" class="hub-team-name"></p>
+            <p id="hub-team-league" class="hub-summary-card__meta"></p>
+            <p id="hub-team-record" class="hub-team-record"></p>
+            <p id="hub-team-contract" class="hub-summary-card__meta"></p>
+            <p id="hub-balance" class="hub-balance"></p>
+          </section>
+
+          <section class="creation-card">
+            <h3 class="creation-card__title">Career Totals</h3>
+            <div id="hub-career-totals"></div>
+          </section>
+
+          <section class="creation-card creation-card--wide">
+            <div class="creation-card__header">
+              <h3 class="creation-card__title">Upcoming Games</h3>
+              <button id="btn-view-schedule" class="btn btn--ghost btn--small" type="button">Full Schedule</button>
+            </div>
+            <div id="hub-upcoming-list"></div>
+          </section>
+        </div>
+
+        <div class="hub-actions">
+          <button id="btn-play-next-game" class="btn btn--primary" type="button">▶ Play Next Game</button>
+          <button id="btn-play-rest-season" class="btn btn--ghost" type="button">⏭ Play Rest of Season</button>
+          <button id="btn-train" class="btn btn--ghost" type="button">🏋 Train</button>
+          <button id="btn-shop" class="btn btn--ghost" type="button">🛒 Shop</button>
+          <button id="btn-standings" class="btn btn--ghost" type="button">📊 Standings</button>
+          <button id="btn-records" class="btn btn--ghost" type="button">🏆 Records</button>
+          <button id="btn-awards" class="btn btn--ghost" type="button">🎖 Awards</button>
+          <button id="btn-view-news" class="btn btn--ghost" type="button">📰 News</button>
+          <button id="btn-hub-to-menu" class="btn btn--ghost" type="button">← Back to Menu</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ===== Global components (modal and toasts) ===== -->
+  <div id="modal-overlay" class="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3 class="modal__title"></h3>
+      <div class="modal__body"></div>
+      <div class="modal__footer"></div>
+    </div>
+  </div>
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ===== Core ===== -->
+  <script src="js/core/config.js"></script>
+  <script src="js/core/eventBus.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/state.js"></script>
+  <script src="js/core/storage.js"></script>
+
+  <!-- ===== Data ===== -->
+  <script src="js/data/countries.js"></script>
+  <script src="js/data/usStates.js"></script>
+  <script src="js/data/names.js"></script>
+  <script src="js/data/europeanAcademies.js"></script>
+  <script src="js/data/ahlAffiliates.js"></script>
+
+  <!-- ===== Player ===== -->
+  <script src="js/player/attributes.js"></script>
+  <script src="js/player/player.js"></script>
+
+  <!-- ===== Leagues ===== -->
+  <script src="js/leagues/leagueData.js"></script>
+  <script src="js/leagues/teamGenerator.js"></script>
+  <script src="js/leagues/season.js"></script>
+
+  <!-- ===== Systems ===== -->
+  <script src="js/systems/simulationEngine.js"></script>
+  <script src="js/systems/progression.js"></script>
+  <script src="js/events/eventDefinitions.js"></script>
+  <script src="js/systems/eventEngine.js"></script>
+  <script src="js/systems/contract.js"></script>
+  <script src="js/systems/specialEvents.js"></script>
+  <script src="js/systems/minigameDifficulty.js"></script>
+  <script src="js/systems/ncaaOffers.js"></script>
+  <script src="js/systems/seasonRunner.js"></script>
+  <script src="js/systems/careerPath.js"></script>
+  <script src="js/systems/newsEngine.js"></script>
+  <script src="js/data/shopItems.js"></script>
+  <script src="js/systems/economy.js"></script>
+  <script src="js/systems/shop.js"></script>
+  <script src="js/data/realTeams.js"></script>
+  <script src="js/database/npcFactory.js"></script>
+  <script src="js/database/worldGenerator.js"></script>
+  <script src="js/systems/worldAI.js"></script>
+  <script src="js/systems/audio.js"></script>
+  <script src="js/systems/awards.js"></script>
+  <script src="js/systems/playoffs.js"></script>
+  <script src="js/systems/playoffConferences.js"></script>
+  <script src="js/systems/tournament.js"></script>
+  <script src="js/minigames/reactionGame.js"></script>
+  <script src="js/minigames/aimGame.js"></script>
+  <script src="js/minigames/sequenceGame.js"></script>
+  <script src="js/minigames/olympicMinigames.js"></script>
+  <script src="js/minigames/minigameRouter.js"></script>
+  <script src="js/minigames/training.js"></script>
+  <script src="js/minigames/tryout.js"></script>
+
+  <!-- ===== UI ===== -->
+  <script src="js/ui/theme.js"></script>
+  <script src="js/ui/screenManager.js"></script>
+  <script src="js/ui/modal.js"></script>
+  <script src="js/ui/toast.js"></script>
+  <script src="js/ui/draftAnimations.js"></script>
+  <script src="js/ui/mainMenu.js"></script>
+  <script src="js/ui/playerCreation.js"></script>
+  <script src="js/ui/careerHub.js"></script>
+
+  <!-- ===== Bootstrap ===== -->
+  <script src="js/main.js"></script>
+  <script>
+    try {
+      if (window.Game && Game.CONFIG) {
+        var el = document.getElementById('version-label');
+        if (el) el.textContent = Game.CONFIG.VERSION;
+      }
+    } catch (e) {}
+  </script>
+<noscript><p style="padding:2rem;color:#fff;background:#000">JavaScript is required to play Frozen Legacy.</p></noscript>
+</body>
+</html>

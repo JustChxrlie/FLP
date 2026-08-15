@@ -1,0 +1,89 @@
+/*
+  theme.css
+  Tokens de diseño. Paleta inspirada en el hielo de la pista y el rojo de
+  camiseta/penalti: fondo casi negro con vetas azul-hielo, acento cálido
+  de "sin-bin" para llamadas a la acción y estados críticos.
+*/
+
+:root,
+[data-theme='dark'] {
+  --bg-deep: #0a0e14;
+  --bg-surface: #11161f;
+  --bg-elevated: #1a2130;
+  --bg-elevated-hover: #212a3c;
+  --line: #2a3448;
+  --line-soft: #1e2636;
+
+  --ice: #6fe3d6;
+  --ice-dim: #3c8f89;
+  --rink-red: #e6455d;
+  --rink-red-dim: #a53347;
+  --gold: #f4c667;
+
+  --text-primary: #eef2f7;
+  --text-secondary: #9aa7bd;
+  --text-faint: #5c6780;
+
+  --success: #59c68f;
+  --danger: #e6455d;
+  --info: #6fb8e3;
+
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme='light'] {
+  --bg-deep: #eef1f6;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f7f9fc;
+  --bg-elevated-hover: #eef2f8;
+  --line: #dbe1ec;
+  --line-soft: #e7ebf3;
+
+  --ice: #1f9b8f;
+  --ice-dim: #57b6ab;
+  --rink-red: #d33350;
+  --rink-red-dim: #e6768c;
+  --gold: #c98f2a;
+
+  --text-primary: #171c26;
+  --text-secondary: #4d5871;
+  --text-faint: #8891a3;
+
+  --success: #2f9663;
+  --danger: #d33350;
+  --info: #2a79ab;
+
+  --shadow-card: 0 8px 24px rgba(30, 40, 60, 0.12);
+  --shadow-modal: 0 24px 60px rgba(30, 40, 60, 0.25);
+}
+
+:root {
+  --font-display: 'Teko', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

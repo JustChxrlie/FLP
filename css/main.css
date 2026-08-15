@@ -1,0 +1,580 @@
+/* main.css — reset, tipografía y layout estructural */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 var(--space-3);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+#app-root {
+  position: relative;
+  min-height: 100vh;
+}
+
+[data-screen] {
+  display: none;
+  position: relative;
+  min-height: 100vh;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s var(--ease-standard), transform 0.35s var(--ease-standard);
+  pointer-events: none;
+}
+
+[data-screen].screen--active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* HTML hidden attr still works; JS removes it when showing */
+[data-screen][hidden] {
+  display: none !important;
+}
+
+/* ===== Pantalla: Menú principal ===== */
+
+.menu-screen {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+}
+
+.menu-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-7);
+  overflow: hidden;
+  background: radial-gradient(120% 140% at 20% 20%, var(--bg-surface) 0%, var(--bg-deep) 65%);
+  border-right: 1px solid var(--line-soft);
+}
+
+.faceoff-ring {
+  position: absolute;
+  width: 640px;
+  height: 640px;
+  border-radius: 50%;
+  border: 2px solid var(--ice-dim);
+  opacity: 0.28;
+  top: 50%;
+  left: -140px;
+  transform: translateY(-50%);
+  animation: spin 90s linear infinite;
+}
+
+.faceoff-ring::before,
+.faceoff-ring::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--ice-dim);
+}
+
+.faceoff-ring::before {
+  inset: 90px;
+  opacity: 0.6;
+}
+
+.faceoff-ring::after {
+  inset: 180px;
+  opacity: 0.35;
+}
+
+.faceoff-dot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--rink-red);
+  top: 50%;
+  left: -140px;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 24px 4px rgba(230, 69, 93, 0.45);
+}
+
+@keyframes spin {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+.menu-hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ice);
+  margin-bottom: var(--space-4);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: var(--ice);
+  display: inline-block;
+}
+
+.menu-hero h1 {
+  font-size: clamp(3.2rem, 7vw, 5.4rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.menu-hero h1 span {
+  color: var(--ice);
+}
+
+.menu-hero__tagline {
+  margin-top: var(--space-4);
+  font-size: 1.05rem;
+  max-width: 40ch;
+}
+
+.menu-actions {
+  margin-top: var(--space-6);
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.menu-hero__footer {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--space-7);
+  display: flex;
+  gap: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.menu-hero__footer button {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0;
+}
+
+.menu-hero__footer button:hover {
+  color: var(--ice);
+}
+
+.menu-slots {
+  padding: var(--space-7) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  overflow-y: auto;
+}
+
+.menu-slots h2 {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.menu-slots__subtitle {
+  margin-bottom: var(--space-4);
+}
+
+#save-slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ===== Pantalla stub de creación de jugador ===== */
+
+.stub-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.stub-screen__badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: var(--space-1) var(--space-3);
+}
+
+.stub-screen h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-transform: uppercase;
+}
+
+.stub-screen p {
+  max-width: 46ch;
+}
+
+/* ===== Pantalla: Creación de jugador ===== */
+
+.creation-screen {
+  min-height: 100vh;
+  padding: var(--space-7) var(--space-6);
+  display: flex;
+  justify-content: center;
+}
+
+.creation-screen__inner {
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.creation-header h2 {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  text-transform: uppercase;
+  margin: var(--space-2) 0;
+}
+
+.creation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.creation-card--wide {
+  grid-column: 1 / -1;
+}
+
+.creation-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) 0 var(--space-2);
+}
+
+.creation-footer__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.creation-footer__error {
+  font-size: 0.82rem;
+  color: var(--danger);
+  min-height: 1em;
+}
+
+/* ===== Pantalla stub: hub de carrera ===== */
+
+.hub-summary-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  min-width: 320px;
+  text-align: center;
+}
+
+.hub-summary-card__avatar {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  font-size: 1.8rem;
+}
+
+.hub-summary-card h2 {
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+.hub-summary-card__meta {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.hub-summary-card__archetype {
+  color: var(--ice);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.hub-summary-card__scouting {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--gold);
+  margin-bottom: var(--space-1);
+}
+
+.hub-summary-card__year {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+.hub-career-totals {
+  width: 100%;
+  max-width: 620px;
+}
+
+.totals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-card);
+}
+
+.totals-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.totals-cell__value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--ice);
+  line-height: 1;
+}
+
+.totals-cell__label {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hub-actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.delta-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.delta-chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+
+.delta-chip.delta--up {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.delta-chip.delta--down {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* ===== Screen: Career hub ===== */
+
+.hub-screen {
+  min-height: 100vh;
+  padding: var(--space-6);
+  display: flex;
+  justify-content: center;
+}
+
+.hub-screen__inner {
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.hub-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.hub-player-block {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.hub-player-block h2 {
+  font-size: 1.8rem;
+  text-transform: uppercase;
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.hub-team-name {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0 0 2px;
+}
+
+.hub-team-record {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ice);
+  margin: 0;
+}
+
+/* --- Schedule --- */
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.schedule-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+}
+
+.schedule-row--pending {
+  opacity: 0.7;
+}
+
+.schedule-row__week {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.schedule-row__opponent {
+  color: var(--text-primary);
+}
+
+.schedule-row__result {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--success);
+}
+
+.schedule-row__pending {
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 900px) {
+  .menu-screen {
+    grid-template-columns: 1fr;
+  }
+  .menu-hero {
+    border-right: none;
+    border-bottom: 1px solid var(--line-soft);
+    padding: var(--space-6) var(--space-5);
+    min-height: 56vh;
+  }
+  .faceoff-ring {
+    width: 380px;
+    height: 380px;
+    left: -100px;
+  }
+  .menu-slots {
+    padding: var(--space-5);
+  }
+  .creation-grid {
+    grid-template-columns: 1fr;
+  }
+  .hub-grid {
+    grid-template-columns: 1fr;
+  }
+  .hub-player-block {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
